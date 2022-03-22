@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   lint:
-    runs-on: ubbuntu-lateste
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
