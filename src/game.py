@@ -79,6 +79,10 @@ def on_draw():
     ).draw()
 
     pyglet.shapes.Rectangle(
+        x = 0, y = 0, width=WIDTH // 2, height=HEIGHT // 6
+    ).draw()
+
+    pyglet.shapes.Rectangle(
         x=0, y=HEIGHT // 2, width=WIDTH, height=HEIGHT // 6, color=(0, 128, 0)
     ).draw()
     pyglet.shapes.Rectangle(
@@ -96,10 +100,3 @@ def on_draw():
 def update(dt):
     player.update(dt)
     player2.update(dt)
-
-
-# driver code
-
-if __name__ == "__main__":
-    pyglet.clock.schedule_interval(update, 1 / 120)
-    pyglet.app.run()
