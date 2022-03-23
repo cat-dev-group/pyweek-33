@@ -50,7 +50,7 @@ class Player(pyglet.shapes.Rectangle):
 
 
 player = Player(
-    x=0, y=HEIGHT // 6, ground=HEIGHT // 6, width=40, height=40, color=(235, 64, 52)
+    x=0, y=HEIGHT // 6, ground=HEIGHT // 6, width=40, height=40, color=(240, 100, 50)
 )
 player2 = Player(
     x=0,
