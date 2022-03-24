@@ -79,10 +79,6 @@ def on_draw():
     ).draw()
 
     pyglet.shapes.Rectangle(
-        x = 0, y = 0, width=WIDTH // 2, height=HEIGHT // 6
-    ).draw()
-
-    pyglet.shapes.Rectangle(
         x=0, y=HEIGHT // 2, width=WIDTH, height=HEIGHT // 6, color=(0, 128, 0)
     ).draw()
     pyglet.shapes.Rectangle(
