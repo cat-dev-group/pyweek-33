@@ -96,10 +96,3 @@ def on_draw():
 def update(dt):
     player.update(dt)
     player2.update(dt)
-
-
-# driver code
-
-if __name__ == "__main__":
-    pyglet.clock.schedule_interval(update, 1 / 120)
-    pyglet.app.run()
