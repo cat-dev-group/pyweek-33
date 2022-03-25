@@ -1,5 +1,5 @@
 import pyglet
-from .player import *
+from .player import Player
 
 
 class platform(pyglet.shapes.Rectangle):
@@ -24,7 +24,7 @@ class platform(pyglet.shapes.Rectangle):
         ):
             return True
         return False
-
+    
 
 class flag:
     def __init__(self, x, y):
@@ -129,4 +129,3 @@ class button:
 #             and self.y + self.height > other.y
 #         ):
 #             return True
-
