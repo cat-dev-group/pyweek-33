@@ -5,7 +5,7 @@ from pyglet.shapes import Rectangle
 
 class Player(Rectangle):
     left_col, right_col = False, False
-    entities = {"platform": {}, "button": {}, "flag": {} , "spike" : {}}
+    entities = {"platform": {}, "button": {}, "flag": {}, "spike": {}}
 
     def __init__(self, x, y, ground, *args, **kwargs):
         super().__init__(x, y, *args, **kwargs)
