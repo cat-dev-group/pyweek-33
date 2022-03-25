@@ -1,5 +1,5 @@
 import pyglet
-from .level_tools import Player, platform, flag, button
+from .level_tools import Player #, platform, flag, button
 from .constants import WIDTH, HEIGHT
 
 bg = pyglet.resource.image("bg.png")
