@@ -1,87 +1,69 @@
 import pyglet
+from .level_tools import Player
 from .constants import WIDTH, HEIGHT
-from pyglet.shapes import Rectangle
+
+# display = pyglet.canvas.Display()
+# screen = display.get_default_screen()
+# WIDTH, HEIGHT = screen.width, screen.height
+
+bg = pyglet.resource.image("bg.png")
+
+game_window = pyglet.window.Window(WIDTH, HEIGHT)
+
+# creating and pushing objects to the screen
+
+good_twin = Player(
+    x=0, y=HEIGHT // 6, ground=HEIGHT // 6, width=40, height=40, color=(240, 100, 50)
+)
+evil_twin = Player(
+    x=0,
+    y=HEIGHT // 2 + HEIGHT // 6,
+    ground=HEIGHT // 6 + HEIGHT // 2,
+    width=40,
+    height=40,
+    color=(235, 64, 52),
+)
+
+# def on():
+#     plats[-1].y = -100
+# def off():
+#     plats[-1].y = HEIGHT//6 + HEIGHT//2
+
+game_window.push_handlers(good_twin)
+game_window.push_handlers(evil_twin)
+game_window.push_handlers(good_twin.key_handler)
+game_window.push_handlers(evil_twin.key_handler)
+# land_obj = platform(WIDTH - WIDTH//3,HEIGHT//4.5,width = WIDTH//6,color = (165, 42, 42))
+# land_obj2 = platform(WIDTH - WIDTH//2,HEIGHT//4,width = WIDTH//6,color = (165, 42, 42))
+# land_obj3 = platform(WIDTH//2,HEIGHT//2+HEIGHT//6,width = HEIGHT//2,color = (165, 42, 42),alignment = 'v')
+# plats = [land_obj,land_obj2,land_obj3]
+# f1 = flag(WIDTH-100,HEIGHT//2+HEIGHT//6)
+# f2 = flag(WIDTH-100,HEIGHT//6)
+# b = button(WIDTH//3,HEIGHT//6 + 50,on,off)
 
 
-class Player(Rectangle):
-    left_col, right_col = False, False
-    entities = {"platform": {}, "button": {}, "flag": {} , "spike" : {}}
+def render_entities():
 
-    def __init__(self, x, y, ground, *args, **kwargs):
-        super().__init__(x, y, *args, **kwargs)
-        self.key_handler = pyglet.window.key.KeyStateHandler()
-        self.x = x
-        self.y = y
-        self.event_handlers = [self, self.key_handler]
-        self.ground = ground
-        self.max_jump_height_reached = False
-        self.relative_rest = self.ground
-        self.max_jump_height = 100
-        self.button_pressed = False
+    for i in Player.entities.values():
+        for j in i.values():
+            j.draw()
 
-    @property
-    def on_platform(self):
-        return any(i.on_platform for i in Player.entities["platform"].values())
 
-    def update(self, dt):
-        for i in Player.entities["platform"].values():
-            if i.collision_check(self):
-                if (
-                    self.y < i.y + i._height / 2 < self.y + self.height
-                    if i.a == "h"
-                    else True
-                ):
-                    if self.x < i.x:
-                        Player.left_col = True
-                        break
-                    elif self.x > i.x:
-                        Player.right_col = True
-                        break
-                elif self.y > i.y:
-                    i.on_platform = True
-                    self.relative_rest = self.y
-                    self.max_jump_height_reached = False
-                else:
-                    self.max_jump_height_reached = True
-            else:
-                i.on_platform = False
-        else:
-            Player.left_col = False
-            Player.right_col = False
+@game_window.event
+def on_draw():
+    game_window.clear()
+    bg.blit(0, 0)
 
-        # movements
-        if self.key_handler[pyglet.window.key.A]:
-            self.x -= 250 * dt * (not Player.right_col)
+    # render_entities()
 
-        if self.key_handler[pyglet.window.key.D]:
-            self.x += 250 * dt * (not Player.left_col)
 
-        # jump logic
-        if self.key_handler[pyglet.window.key.W]:
-            self.y += 250 * dt if not self.max_jump_height_reached else 0
+def update(dt):
+    good_twin.update(dt)
+    evil_twin.update(dt)
 
-        if self.y - self.relative_rest > self.max_jump_height:
-            self.max_jump_height_reached = True
-        if self.y - self.ground <= 0:
-            self.y = self.ground
-            self.max_jump_height_reached = False
 
-        if self.y - self.relative_rest <= 0 and not self.on_platform:
-            self.relative_rest = self.ground
+# driver code
 
-        # restriction to leave screen
-        if self.x > WIDTH - self.width:
-            self.x = WIDTH - self.width
-
-        if self.x < 0:
-            self.x = 0
-
-        if (
-            (self.y - self.ground > 0 and not self.key_handler[pyglet.window.key.W])
-            or self.max_jump_height_reached
-        ) and not self.on_platform:
-            self.y -= 250 * dt
-        for i in Player.entities["spike"].values():
-            if i.collision_check(self):
-                print("You died")
-                # pyglet.app.exit()
+if __name__ == "__main__":
+    pyglet.clock.schedule_interval(update, 1 / 120)
+    pyglet.app.run()
