@@ -1,8 +1,8 @@
-from email.mime import image
-import pyglet
 from pathlib import Path
 
-from .constants import WIDTH, HEIGHT
+import pyglet
+
+from .constants import HEIGHT, WIDTH
 
 
 class Pause(pyglet.shapes.Rectangle):
