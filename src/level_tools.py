@@ -50,7 +50,7 @@ class flag:
             ),
         )
 
-        Player.entities["flag"][x, y] = self.batch
+        Player.entities["flag"][x, y] = self
 
     def draw(self):
         self.batch.draw()
@@ -87,7 +87,7 @@ class button:
                 self.x, self.y, width=15, height=22, color=(255, 0, 0), batch=self.batch
             ),
         )
-        Player.entities["button"][x, y] = self.batch
+        Player.entities["button"][x, y] = self
 
     def collision_check(self, other):
         self = self.parts[1]
