@@ -13,6 +13,11 @@ class Player(Rectangle):
         self.event_handlers = [self, self.key_handler]
         self.ground = ground
         self.max_jump_height_reached = False
+        self.keys = dict(pause=False)
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.P:
+            self.keys["pause"] = not self.keys["pause"]
 
     def update(self, dt):
         # movements
