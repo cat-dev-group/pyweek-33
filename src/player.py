@@ -18,7 +18,7 @@ class Player(Rectangle):
         self.relative_rest = self.ground
         self.max_jump_height = 100
         self.button_pressed = False
-        Player.entities["players"] = self
+        Player.entities["players"][self] = self
 
     @property
     def on_platform(self):
