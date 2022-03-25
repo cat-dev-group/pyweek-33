@@ -15,10 +15,10 @@ class Pause(pyglet.shapes.Rectangle):
 
 menu_batch = pyglet.graphics.Batch()
 
-image_path = Path("src/test.png")
+image_path = Path("src/resources/test.png")
 test = pyglet.image.load(image_path)
-image_path_2 = Path("src/test2.png")
-test2 = pyglet.image.load(image_path)
+image_path_1 = Path("src/resources/test1.png")
+test1 = pyglet.image.load(image_path_1)
 
 
 pause = Pause(
@@ -35,6 +35,6 @@ resume = pyglet.gui.ToggleButton(
     x=WIDTH // 2 - 100,
     y=HEIGHT // 2,
     pressed=test,
-    depressed=test2,
+    depressed=test1,
     batch=menu_batch
 )
