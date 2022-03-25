@@ -1,7 +1,9 @@
 import pyglet
 
 from .constants import HEIGHT, WIDTH
+from .menus import menu_batch
 from .player import Player
+
 
 game_window = pyglet.window.Window(WIDTH, HEIGHT)
 
@@ -47,7 +49,16 @@ def on_draw():
     player.draw()
     player2.draw()
 
+    if player.keys["pause"]:
+        menu_batch.draw()
+
 
 def update(dt):
-    player.update(dt)
-    player2.update(dt)
+    running = True
+    if player.keys["pause"] and running:
+        running = False
+    elif player.keys["pause"] and not running:
+        running = True
+    if running:
+        player.update(dt)
+        player2.update(dt)
