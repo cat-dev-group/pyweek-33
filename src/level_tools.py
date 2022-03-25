@@ -24,7 +24,7 @@ class platform(pyglet.shapes.Rectangle):
         ):
             return True
         return False
-    
+
 
 class flag:
     def __init__(self, x, y):
@@ -103,7 +103,7 @@ class button:
         self.batch.draw()
 
     def update(self, dt):
-        for i in (good_twin, evil_twin):
+        for i in Player.entities['players'].values():
             if self.collision_check(i):
                 if not i.button_pressed:
                     if not self.state:
