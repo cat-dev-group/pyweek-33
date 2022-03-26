@@ -9,3 +9,10 @@ The official repo for Cat Dev PyWeek 33 shenanigans!
 
 ## Contributing
 For contributing instructions and guidelines, as well as more detailed setup steps, see `CONTRIBUTING.md`.
+
+## Running the game
+1. Clone the repository
+2. `cd` to `pyweek-33`
+3. `poetry install`
+4. `poetry shell`
+5. `py -m src`
