@@ -1,7 +1,7 @@
 import pyglet
 
 from .constants import HEIGHT, WIDTH
-from .level_tools import Flag, Platform , Button
+from .level_tools import Flag, Platform, Button
 from .menus import menu_batch, pause_text, resume_text
 from .player import Player
 
@@ -25,24 +25,47 @@ good_twin = Player(
     color=(235, 64, 52),
 )
 
+
 def on():
-    ins = Player.entities["platform"].pop((WIDTH//3 , HEIGHT //2 + HEIGHT//6))
+    ins = Player.entities["platform"].pop((WIDTH // 3, HEIGHT // 2 + HEIGHT // 6))
     ins.delete()
+
+
 def off():
-    Platform(WIDTH//3 , HEIGHT //2 + HEIGHT//6 , width = HEIGHT//3 , color=(255, 215, 0) , alignment = 'v')
+    Platform(
+        WIDTH // 3,
+        HEIGHT // 2 + HEIGHT // 6,
+        width=HEIGHT // 3,
+        color=(255, 215, 0),
+        alignment="v",
+    )
+
 
 # modify the update func for each level according to need
-Platform(WIDTH//3 , HEIGHT //2 + HEIGHT//6 , width = HEIGHT//3 , color=(255, 215, 0) , alignment = 'v')
-Platform(WIDTH - WIDTH//2.5 , HEIGHT//3 - HEIGHT//12 , width = HEIGHT//2 , color=(255, 215, 0) , alignment = 'v')
+Platform(
+    WIDTH // 3,
+    HEIGHT // 2 + HEIGHT // 6,
+    width=HEIGHT // 3,
+    color=(255, 215, 0),
+    alignment="v",
+)
+Platform(
+    WIDTH - WIDTH // 2.5,
+    HEIGHT // 3 - HEIGHT // 12,
+    width=HEIGHT // 2,
+    color=(255, 215, 0),
+    alignment="v",
+)
 # Platform(WIDTH - WIDTH//5 , HEIGHT - HEIGHT//3 , width = HEIGHT//3 , color=(255, 215, 0) , alignment = 'v')
 # Platform(WIDTH - WIDTH//5 + 10, HEIGHT - HEIGHT//3 , width = HEIGHT//10 , color=(255, 215, 0))
 
 Platform(0, HEIGHT // 2 + HEIGHT // 6 - 10, width=WIDTH, color=(255, 215, 0))
 Platform(0, HEIGHT // 6 - 10, width=WIDTH, color=(255, 215, 0))
-Button(WIDTH - WIDTH//2.5 - 22 , HEIGHT//3 - HEIGHT//12 + 10, on,off)
+Button(WIDTH - WIDTH // 2.5 - 22, HEIGHT // 3 - HEIGHT // 12 + 10, on, off)
 
 good_world_flag = Flag(WIDTH - 100, HEIGHT // 2 + HEIGHT // 6)
 under_world_flag = Flag(WIDTH - 100, HEIGHT // 6)
+
 
 def push():
     for i in Player.entities.values():
@@ -54,6 +77,7 @@ def push():
 
 push()
 game_window.push_handlers(good_twin)  # to make sure the pause key is tracked
+
 
 def update(dt):
     running = True
@@ -67,6 +91,8 @@ def update(dt):
             for obj in j.values():
                 if i in ("button", "players"):
                     obj.update(dt)
+
+
 def render_entities():
     for i in Player.entities.values():
         for j in i.values():
