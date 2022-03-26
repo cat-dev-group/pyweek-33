@@ -29,7 +29,7 @@ class Player(Rectangle):
             if i.collision_check(self):
                 if (
                     self.y < i.y + i._height / 2 < self.y + self.height
-                    if i.a == "h"
+                    if i.alignment == "h"
                     else True
                 ):
                     if self.x < i.x:
