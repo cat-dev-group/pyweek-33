@@ -7,6 +7,8 @@ from .player import Player
 
 # print(os.getcwd())
 bg = pyglet.resource.image("bg.png")
+bg.width = WIDTH
+bg.height = HEIGHT
 
 game_window = pyglet.window.Window(WIDTH, HEIGHT)
 
