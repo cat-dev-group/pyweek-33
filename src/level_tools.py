@@ -1,5 +1,6 @@
 import pyglet
 from .player import Player
+from .constants import HEIGHT
 
 # jump = pyglet.media.load('src/media/jump.wav', streaming=False)
 
@@ -27,12 +28,6 @@ class Platform(pyglet.shapes.Rectangle):
         ):
             return True
         return False
-
-
-# bugged sound
-# def update(self,dt):
-#     if self.key_handler[pyglet.window.key.W] and not self.on_platform:
-#         jump.play()
 
 
 class Flag:
@@ -112,16 +107,22 @@ class Button:
         self.batch.draw()
 
     def update(self, dt):
-        for i in Player.entities["players"].values():
-            if self.collision_check(i):
-                if not i.button_pressed:
-                    if not self.state:
-                        self.on_trigger()
-                    else:
-                        self.off_trigger()
-                    self.state = not self.state
-                    self.parts[1].color = (0, 255, 0) if self.state else (255, 0, 0)
-                    i.button_pressed = True
-
-            else:
-                i.button_pressed = False
+        i = [
+            j
+            for j in Player.entities["players"].values()
+            if (self.y > HEIGHT // 2 and j.y > HEIGHT // 2)
+            or (self.y < HEIGHT // 2 and j.y < HEIGHT // 2)
+        ][
+            0
+        ]  # if (self.y > HEIGHT//2 and i.y > HEIGHT//2) or (self.y < HEIGHT//2 and i.y < HEIGHT//2):
+        if self.collision_check(i):
+            if not i.button_pressed:
+                if not self.state:
+                    self.on_trigger()
+                else:
+                    self.off_trigger()
+                self.state = not self.state
+                self.parts[1].color = (0, 255, 0) if self.state else (255, 0, 0)
+                i.button_pressed = True
+        else:
+            i.button_pressed = False
