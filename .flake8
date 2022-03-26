@@ -15,6 +15,8 @@ ignore=
     ANN002,ANN003,ANN101,ANN102,ANN204,ANN206,
     # Binary operators over multiple lines
     W503,
+    # undefined name
+    F821,
 exclude=
     __pycache__,.cache,
     .gitignore, .gitattributes,

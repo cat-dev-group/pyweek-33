@@ -91,7 +91,3 @@ class Player(Rectangle):
             or self.max_jump_height_reached
         ) and not self.on_platform:
             self.y -= 250 * dt
-        for i in Player.entities["spike"].values():
-            if i.collision_check(self):
-                print("You died")
-                # pyglet.app.exit()
