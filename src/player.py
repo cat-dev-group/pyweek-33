@@ -18,7 +18,7 @@ class Player(Rectangle):
         self.relative_rest = self.ground
         self.max_jump_height = 100
         self.button_pressed = False
-        Player.entities["players"][self] = self
+        Player.entities["players"][x, y] = self
 
     @property
     def on_platform(self):
@@ -55,11 +55,14 @@ class Player(Rectangle):
             self.x -= 250 * dt * (not Player.right_col)
 
         if self.key_handler[pyglet.window.key.D]:
+
             self.x += 250 * dt * (not Player.left_col)
 
         # jump logic
-        if self.key_handler[pyglet.window.key.W]:
-            self.y += 250 * dt if not self.max_jump_height_reached else 0
+        if self.key_handler[pyglet.window.key.W] and not self.max_jump_height_reached:
+            # if any(i.on_platform for i in Player.entities['platform'].values()) or self.relative_rest == self.ground:
+            #     jump.play()
+            self.y += 250 * dt
 
         if self.y - self.relative_rest > self.max_jump_height:
             self.max_jump_height_reached = True
