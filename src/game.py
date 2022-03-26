@@ -1,5 +1,5 @@
 import pyglet
-from .level_tools import Player  # , platform, flag, button
+from .level_tools import Player  # , Platform, Flag, Button
 from .constants import WIDTH, HEIGHT
 
 bg = pyglet.resource.image("bg.png")
@@ -35,13 +35,13 @@ game_window.push_handlers(good_twin)
 game_window.push_handlers(evil_twin)
 game_window.push_handlers(good_twin.key_handler)
 game_window.push_handlers(evil_twin.key_handler)
-# platform(
+# Platform(
 #     WIDTH - WIDTH // 3, HEIGHT // 4.5, width=WIDTH // 6, color=(165, 42, 42)
 # )
-# platform(
+# Platform(
 #     WIDTH - WIDTH // 2, HEIGHT // 4, width=WIDTH // 6, color=(165, 42, 42)
 # )
-# platform(
+# Platform(
 #     WIDTH // 2,
 #     HEIGHT // 2 + HEIGHT // 6,
 #     width=HEIGHT // 2,
@@ -49,9 +49,9 @@ game_window.push_handlers(evil_twin.key_handler)
 #     alignment="v",
 # )
 
-# flag(WIDTH - 100, HEIGHT // 2 + HEIGHT // 6)
-# flag(WIDTH - 100, HEIGHT // 6)
-# button(WIDTH // 3, HEIGHT // 6 + 50, on, off)
+# Flag(WIDTH - 100, HEIGHT // 2 + HEIGHT // 6)
+# Flag(WIDTH - 100, HEIGHT // 6)
+# Button(WIDTH // 3, HEIGHT // 6 + 50, on, off)
 
 
 def render_entities():
