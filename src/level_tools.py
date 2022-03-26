@@ -1,6 +1,8 @@
 import pyglet
 from .player import Player
 
+# jump = pyglet.media.load('src/media/jump.wav', streaming=False)
+
 
 class Platform(pyglet.shapes.Rectangle):
     def __init__(self, x, y, width, color, alignment="h"):
@@ -13,6 +15,7 @@ class Platform(pyglet.shapes.Rectangle):
         super().__init__(x, y, width=width, height=height, color=color)
         self.on_platform = False
         self.alignment = alignment
+        self.key_handler = pyglet.window.key.KeyStateHandler()
         Player.entities["platform"][x, y] = self
 
     def collision_check(other, self):
@@ -24,6 +27,12 @@ class Platform(pyglet.shapes.Rectangle):
         ):
             return True
         return False
+
+
+# bugged sound
+# def update(self,dt):
+#     if self.key_handler[pyglet.window.key.W] and not self.on_platform:
+#         jump.play()
 
 
 class Flag:
@@ -103,7 +112,7 @@ class Button:
         self.batch.draw()
 
     def update(self, dt):
-        for i in Player.entities['players'].values():
+        for i in Player.entities["players"].values():
             if self.collision_check(i):
                 if not i.button_pressed:
                     if not self.state:
@@ -116,16 +125,3 @@ class Button:
 
             else:
                 i.button_pressed = False
-# class Spike(pyglet.shapes.Triangle):
-#     def __init__(self, x, y, color=(0, 0, 0)):
-#         super().__init__(x, y, x + 30, y, x + 15, y + 30, color=color)
-#         Player.entities["spike"][x, y] = self
-
-#     def collision_check(self, other):
-#         if (
-#             self.x < other.x + other.width
-#             and self.x + self.width > other.x
-#             and self.y < other.y + other.height
-#             and self.y + self.height > other.y
-#         ):
-#             return True
