@@ -8,10 +8,10 @@ game_window = pyglet.window.Window(WIDTH, HEIGHT)
 
 # creating and pushing objects to the screen
 
-good_twin = Player(
+evil_twin = Player(
     x=0, y=HEIGHT // 6, ground=HEIGHT // 6, width=40, height=40, color=(0, 0, 128)
 )
-evil_twin = Player(
+good_twin = Player(
     x=0,
     y=HEIGHT // 2 + HEIGHT // 6,
     ground=HEIGHT // 6 + HEIGHT // 2,
