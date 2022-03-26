@@ -2,7 +2,7 @@ import pyglet
 from .player import Player
 
 
-class platform(pyglet.shapes.Rectangle):
+class Platform(pyglet.shapes.Rectangle):
     def __init__(self, x, y, width, color, alignment="h"):
         if alignment == "h":
             height = 10
@@ -12,7 +12,7 @@ class platform(pyglet.shapes.Rectangle):
 
         super().__init__(x, y, width=width, height=height, color=color)
         self.on_platform = False
-        self.a = alignment
+        self.alignment = alignment
         Player.entities["platform"][x, y] = self
 
     def collision_check(other, self):
@@ -26,7 +26,7 @@ class platform(pyglet.shapes.Rectangle):
         return False
 
 
-class flag:
+class Flag:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -66,7 +66,7 @@ class flag:
             return True
 
 
-class button:
+class Button:
     def __init__(self, x, y, on_trigger, off_trigger):
         self.x = x
         self.y = y
@@ -116,7 +116,7 @@ class button:
 
             else:
                 i.button_pressed = False
-# class spike(pyglet.shapes.Triangle):
+# class Spike(pyglet.shapes.Triangle):
 #     def __init__(self, x, y, color=(0, 0, 0)):
 #         super().__init__(x, y, x + 30, y, x + 15, y + 30, color=color)
 #         Player.entities["spike"][x, y] = self
