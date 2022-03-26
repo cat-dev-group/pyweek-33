@@ -1,6 +1,7 @@
 import pyglet
-from .constants import WIDTH
 from pyglet.shapes import Rectangle
+
+from .constants import WIDTH
 
 
 class Player(Rectangle):
@@ -15,6 +16,7 @@ class Player(Rectangle):
         self.event_handlers = [self, self.key_handler]
         self.ground = ground
         self.max_jump_height_reached = False
+        self.pause_check = {"pause": False}
         self.relative_rest = self.ground
         self.max_jump_height = 100
         self.button_pressed = False
@@ -23,6 +25,10 @@ class Player(Rectangle):
     @property
     def on_platform(self):
         return any(i.on_platform for i in Player.entities["platform"].values())
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.P:
+            self.pause_check["pause"] = not self.pause_check["pause"]
 
     def update(self, dt):
         for i in Player.entities["platform"].values():

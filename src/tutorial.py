@@ -1,10 +1,14 @@
 import pyglet
-from .level_tools import Platform, Flag
-from .constants import WIDTH, HEIGHT
+
+from .constants import HEIGHT, WIDTH
+from .level_tools import Flag, Platform
+from .menus import menu_batch, pause_text, resume_text
 from .player import Player
 
 # print(os.getcwd())
 bg = pyglet.resource.image("bg.png")
+bg.width = WIDTH
+bg.height = HEIGHT
 
 game_window = pyglet.window.Window(WIDTH, HEIGHT)
 
@@ -83,6 +87,7 @@ def push():
 
 
 push()
+game_window.push_handlers(good_twin)  # to make sure the pause key is tracked
 
 
 def update(dt):
@@ -100,10 +105,17 @@ def update(dt):
         label.text = "You have to reach the flag of your world WITHOUT letting your twin reach it"
         label.edits[0] = True
 
-    for i, j in Player.entities.items():
-        for obj in j.values():
-            if i in ("button", "players"):
-                obj.update(dt)
+    running = True
+    if good_twin.pause_check["pause"] and running:
+        running = False
+        menu_batch.draw()
+    elif good_twin.pause_check["pause"] and not running:
+        running = True
+    if running:
+        for i, j in Player.entities.items():
+            for obj in j.values():
+                if i in ("button", "players"):
+                    obj.update(dt)
     # if under_world_flag.collision_check(evil_twin):
     #     print("you lost")
     # elif good_world_flag.collision_check(good_twin):
@@ -118,6 +130,7 @@ def render_entities():
             j.draw()
     if label.edits[0]:
         label3.draw()
+    pause_text.draw()
     # if keys[pyglet.window.key.W]:
     #     jump.play()
 
@@ -127,3 +140,6 @@ def on_draw():
     game_window.clear()
     bg.blit(0, 0)
     render_entities()
+    if good_twin.pause_check["pause"]:
+        menu_batch.draw()
+        resume_text.draw()
