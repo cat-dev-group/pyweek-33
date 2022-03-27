@@ -1,118 +1,95 @@
 import pyglet
+from pyglet.shapes import Rectangle
+
+from .constants import WIDTH, HEIGHT
 
 
-from .constants import HEIGHT, WIDTH
+class Player(Rectangle):
+    left_col, right_col = False, False
+    entities = {"platform": {}, "button": {}, "flag": {}, "spike": {}, "players": {}}
 
-menu_batch = pyglet.graphics.Batch()
-lose_menu_batch = pyglet.graphics.Batch()
-win_menu_batch = pyglet.graphics.Batch()
-background = pyglet.graphics.OrderedGroup(0)
-foreground = pyglet.graphics.OrderedGroup(1)
-
-
-class Text(pyglet.text.Label):
-    def __init__(self, text, size, x, y, edits=1, *args, **kwargs):
-        super().__init__(
-            text,
-            font_name="comic sans",
-            font_size=size,
-            x=x,
-            y=y,
-            anchor_x="center",
-            anchor_y="center",
-        )
-
-
-class Pause(pyglet.shapes.Rectangle):
-    def __init__(self, x, y, width, height, *args, **kwargs):
-        super().__init__(x, y, width, height, *args, **kwargs)
+    def __init__(self, x, y, ground, *args, **kwargs):
+        super().__init__(x, y, *args, **kwargs)
         self.key_handler = pyglet.window.key.KeyStateHandler()
-        self.anchor_x = width // 2
-        self.anchor_y = height // 2
+        self.x = x
+        self.y = y
+        self.event_handlers = [self, self.key_handler]
+        self.ground = ground
+        self.max_jump_height_reached = False
+        self.pause_check = {"pause": False}
+        self.relative_rest = self.ground
+        self.max_jump_height = 100
+        self.button_pressed = False
+        Player.entities["players"][x, y] = self
 
+    @property
+    def on_platform(self):
+        return any(i.on_platform for i in Player.entities["platform"].values())
 
-pause_text = Text(
-    text="Press 'P' to pause",
-    size=20,
-    x=WIDTH // 2,
-    y=round(HEIGHT * 0.05),
-    batch=menu_batch,
-    group=foreground,
-)
+    def on_key_press(self, symbol, modifiers):
+        if (
+            symbol == pyglet.window.key.P
+            and self == Player.entities["players"][0, HEIGHT // 2 + HEIGHT // 6]
+        ):
+            self.pause_check["pause"] = not self.pause_check["pause"]
+            print(self.pause_check["pause"])
 
-resume_text = Text(
-    text="Press 'P' to resume",
-    size=20,
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    batch=menu_batch,
-    group=foreground,
-)
+    def update(self, dt):
+        for i in Player.entities["platform"].values():
+            if i.collision_check(self):
+                if (
+                    self.y < i.y + i._height / 2 < self.y + self.height
+                    if i.alignment == "h"
+                    else i.y < self.y + self.height / 2 < i.y + i._height
+                ):
+                    if self.x < i.x:
+                        Player.left_col = True
+                        break
+                    elif self.x > i.x:
+                        Player.right_col = True
+                        break
+                elif self.y > i.y:
+                    i.on_platform = True
+                    self.relative_rest = self.y
+                    self.max_jump_height_reached = False
+                else:
+                    self.max_jump_height_reached = True
+            else:
+                i.on_platform = False
+        else:
+            Player.left_col = False
+            Player.right_col = False
 
-pause = Pause(
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    width=800,
-    height=300,
-    color=(100, 0, 100),
-    batch=menu_batch,
-    group=background,
-)
+        # movements
+        if self.key_handler[pyglet.window.key.A]:
+            self.x -= 250 * dt * (not Player.right_col)
 
-pause.opacity = 125
+        if self.key_handler[pyglet.window.key.D]:
 
-lose_screen = Pause(
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    width=WIDTH // 2,
-    height=HEIGHT // 2,
-    color=(255, 0, 0),
-    batch=lose_menu_batch,
-    group=background,
-)
+            self.x += 250 * dt * (not Player.left_col)
 
-lose_text = Text(
-    text="You Lost :(",
-    size=20,
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    batch=lose_menu_batch,
-    group=foreground,
-)
+        # jump logic
+        if self.key_handler[pyglet.window.key.W] and not self.max_jump_height_reached:
+            self.y += 250 * dt
 
-try_again = Text(
-    text="Hit Enter to try again",
-    size=20,
-    x=WIDTH // 2,
-    y=HEIGHT // 3,
-)
+        if self.y - self.relative_rest > self.max_jump_height:
+            self.max_jump_height_reached = True
+        if self.y - self.ground <= 0:
+            self.y = self.ground
+            self.max_jump_height_reached = False
 
-lose_screen.opacity = 125
+        if self.y - self.relative_rest <= 0 and not self.on_platform:
+            self.relative_rest = self.ground
 
-win_screen = Pause(
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    width=WIDTH // 2,
-    height=HEIGHT // 2,
-    color=(0, 255, 0),
-    batch=win_menu_batch,
-    group=background,
-)
+        # restriction to leave screen
+        if self.x > WIDTH - self.width:
+            self.x = WIDTH - self.width
 
-win_text = Text(
-    text="You Won :D",
-    size=20,
-    x=WIDTH // 2,
-    y=HEIGHT // 2,
-    batch=win_menu_batch,
-    group=foreground,
-)
+        if self.x < 0:
+            self.x = 0
 
-next_level = Text(
-    text="Hit Enter to move on to the next level!",
-    size=20,
-    x=WIDTH // 2,
-    y=HEIGHT // 3,
-)
-
-win_screen.opacity = 125
+        if (
+            (self.y - self.ground > 0 and not self.key_handler[pyglet.window.key.W])
+            or self.max_jump_height_reached
+        ) and not self.on_platform:
+            self.y -= 250 * dt
