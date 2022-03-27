@@ -1,6 +1,5 @@
 import pyglet
 
-
 levels = {
     "tutorial": "from .tutorial import evil_twin, game_window, good_twin, update",
     "level1": "from .level1 import evil_twin, game_window, good_twin, update",
@@ -10,6 +9,10 @@ levels = {
 }
 
 exec(levels["tutorial"])
+# exec(levels["level1"])
+# exec(levels["level2"])
+# exec(levels["level3"])
+# exec(levels["level4"])
 
 # creating and pushing objects to the screen
 game_window.push_handlers(good_twin)
