@@ -14,7 +14,9 @@ levels = {
     "level4": "from .level4 import evil_twin, game_window, good_twin, update",
 }
 
-exec(levels[tutorial"])
+# rename it to level[1-4] , we have upto 4 levels
+
+exec(levels["tutorial"])
 
 
 # creating and pushing objects to the screen
