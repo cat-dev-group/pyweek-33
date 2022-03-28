@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.shapes import Rectangle
 
-from .constants import WIDTH
+from .constants import WIDTH, HEIGHT
 
 
 class Player(Rectangle):
@@ -27,8 +27,12 @@ class Player(Rectangle):
         return any(i.on_platform for i in Player.entities["platform"].values())
 
     def on_key_press(self, symbol, modifiers):
-        if symbol == pyglet.window.key.P:
+        if (
+            symbol == pyglet.window.key.P
+            and self == Player.entities["players"][0, HEIGHT // 2 + HEIGHT // 6]
+        ):
             self.pause_check["pause"] = not self.pause_check["pause"]
+            print(self.pause_check["pause"])
 
     def update(self, dt):
         for i in Player.entities["platform"].values():
@@ -36,7 +40,7 @@ class Player(Rectangle):
                 if (
                     self.y < i.y + i._height / 2 < self.y + self.height
                     if i.alignment == "h"
-                    else True
+                    else i.y < self.y + self.height / 2 < i.y + i._height
                 ):
                     if self.x < i.x:
                         Player.left_col = True
@@ -66,8 +70,6 @@ class Player(Rectangle):
 
         # jump logic
         if self.key_handler[pyglet.window.key.W] and not self.max_jump_height_reached:
-            # if any(i.on_platform for i in Player.entities['platform'].values()) or self.relative_rest == self.ground:
-            #     jump.play()
             self.y += 250 * dt
 
         if self.y - self.relative_rest > self.max_jump_height:

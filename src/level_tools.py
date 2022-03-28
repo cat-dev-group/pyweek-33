@@ -2,8 +2,6 @@ import pyglet
 from .player import Player
 from .constants import HEIGHT
 
-# jump = pyglet.media.load('src/media/jump.wav', streaming=False)
-
 
 class Platform(pyglet.shapes.Rectangle):
     def __init__(self, x, y, width, color, alignment="h"):
