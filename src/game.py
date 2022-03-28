@@ -5,7 +5,6 @@ bg = pyglet.resource.image("bg.png")
 bg.width = WIDTH
 bg.height = HEIGHT
 
-
 levels = {
     "tutorial": "from .tutorial import evil_twin, game_window, good_twin, update",
     "level1": "from .level1 import evil_twin, game_window, good_twin, update",
@@ -17,6 +16,10 @@ levels = {
 # rename it to level[1-4] , we have upto 4 levels
 
 exec(levels["tutorial"])
+# exec(levels["level1"])
+# exec(levels["level2"])
+# exec(levels["level3"])
+# exec(levels["level4"])
 
 
 # creating and pushing objects to the screen
